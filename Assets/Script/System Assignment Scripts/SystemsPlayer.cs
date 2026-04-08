@@ -31,22 +31,28 @@ public class SystemsPlayer : MonoBehaviour
     // functions for controlling the player //
     public void OnMovement(InputAction.CallbackContext context)// used for controlling the left and right movement
     {
+        
         moveDir = context.ReadValue<Vector2>(); //reads the value of the controller
+        
     }
     // obtains the values for the bat
     public void OnRightStickpos(InputAction.CallbackContext context)
     {
+        if(context.performed){
         ControllerPositionBat = context.ReadValue<Vector2>(); //reads the value of the mouse
         ControllerPositionBat = (Vector3)ControllerPositionBat + transform.position; // converts the bats position to be equal with the player pos
         controllerActive = true; // controller is active
+        }
         
     }
     public void OnMousePos(InputAction.CallbackContext context)
     {
+        if(context.performed){
         MousePositionBat = context.ReadValue<Vector2>(); //reads the value of the mouse
         MousePositionBat = Camera.main.ScreenToWorldPoint(MousePositionBat);// sets the mouse position for the bat
         MousePositionBat.z = 0;
         controllerActive = false; // mouse is active
+        }
     }
     //checks which controller is active
     public void activeController()

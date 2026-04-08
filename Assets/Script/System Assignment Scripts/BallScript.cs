@@ -71,10 +71,8 @@ public class BallScript : MonoBehaviour
     }
     public void onBatHit()
     {
-        randXOffset = Random.Range(-0.3f,0.3f); //random offset of angle
-        randYOffset = Random.Range(-0.3f,0.3f); //random offset of angle
         float hitAngle = Vector3.Angle(transform.position, batObj.transform.position);// finds angle between players position and the bats position
-        float radiusPlayer=2; // radius used to find point that ball moves towards
+        float radiusPlayer= 2; // radius used to find point that ball moves towards
         float newXValue = transform.position.x + ( radiusPlayer * Mathf.Cos(hitAngle));// finds the x value for where the ball will travel when hit
         float newYValue = transform.position.y + ( radiusPlayer * Mathf.Sin(hitAngle));// finds the y value for where the ball travels when hit
 
