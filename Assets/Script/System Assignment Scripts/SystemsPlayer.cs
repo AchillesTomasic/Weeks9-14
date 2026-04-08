@@ -34,7 +34,6 @@ public class SystemsPlayer : MonoBehaviour
         moveDir = context.ReadValue<Vector2>(); //reads the value of the controller
     }
     // obtains the values for the bat
- 
     public void OnRightStickpos(InputAction.CallbackContext context)
     {
         ControllerPositionBat = context.ReadValue<Vector2>(); //reads the value of the mouse
@@ -49,6 +48,7 @@ public class SystemsPlayer : MonoBehaviour
         MousePositionBat.z = 0;
         controllerActive = false; // mouse is active
     }
+    //checks which controller is active
     public void activeController()
     {
         if(controllerActive)
