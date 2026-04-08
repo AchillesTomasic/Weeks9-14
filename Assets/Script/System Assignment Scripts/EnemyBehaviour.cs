@@ -36,9 +36,15 @@ public class EnemyBehaviour : MonoBehaviour
     {
         transform.position += new Vector3(1,0,0)* speed * Time.deltaTime; // moves the enemy
         // checks if enemy hits boarder
-        if(transform.position.x - (transform.localScale.x/2) < boundaries[0] || transform.position.x + (transform.localScale.x/2) > boundaries[1])
+        if(transform.position.x - (transform.localScale.x/2) < boundaries[0])
         {
             speed *= -1;// flips the direction
+            transform.position = new Vector3(boundaries[0] + (transform.localScale.x/2) + 0.1f,transform.position.y,0); // makes sure enemies dont get stuck in wall
+        }
+        if(transform.position.x + (transform.localScale.x/2) > boundaries[1])
+        {   
+            speed *= -1;// flips the direction
+            transform.position = new Vector3(boundaries[1]- (transform.localScale.x/2)- 0.1f,transform.position.y,0); // makes sure enemies dont get stuck in wall
         }
     }
 }
