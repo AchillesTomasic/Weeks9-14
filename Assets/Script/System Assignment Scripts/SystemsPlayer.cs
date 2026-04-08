@@ -8,7 +8,11 @@ public class SystemsPlayer : MonoBehaviour
     public float speed; // speed for moving the player
     public GameObject PlayerBatHinge; // used to store the players bat hinge
     private Vector2 moveDir; // vector used to see which way the player is moving
-    private Vector2 batDir; // Vector used to detect the position that the bat will point towards
+    public Vector3 batDir; // Vector used to detect the position that the bat will point towards
+    // used to detect between controller and keyboard
+    private Vector3 MousePositionBat; // used for the keyboards controls
+    private Vector3 ControllerPositionBat; // used for the controllers controls
+    public bool controllerActive;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +24,7 @@ public class SystemsPlayer : MonoBehaviour
     {
         moveThePlayer(); // moves the player every frame
         rotateBatDir();// rotates the bat towards the mouse
+        activeController();// checks which control systems active
     }
 
 
@@ -29,11 +34,33 @@ public class SystemsPlayer : MonoBehaviour
         moveDir = context.ReadValue<Vector2>(); //reads the value of the controller
     }
     // obtains the values for the bat
-    public void OnMousepos(InputAction.CallbackContext context)
+ 
+    public void OnRightStickpos(InputAction.CallbackContext context)
     {
-        batDir = context.ReadValue<Vector2>(); //reads the value of the mouse
-        batDir = Camera.main.ScreenToWorldPoint(batDir); //converts the mouses position from the screen to world 
+        ControllerPositionBat = context.ReadValue<Vector2>(); //reads the value of the mouse
+        ControllerPositionBat = (Vector3)ControllerPositionBat + transform.position; // converts the bats position to be equal with the player pos
+        controllerActive = true; // controller is active
+        
     }
+    public void OnMousePos(InputAction.CallbackContext context)
+    {
+        MousePositionBat = context.ReadValue<Vector2>(); //reads the value of the mouse
+        MousePositionBat = Camera.main.ScreenToWorldPoint(MousePositionBat);// sets the mouse position for the bat
+        MousePositionBat.z = 0;
+        controllerActive = false; // mouse is active
+    }
+    public void activeController()
+    {
+        if(controllerActive)
+        {
+            batDir = ControllerPositionBat; // sets the bats direction to the controller
+        }
+        else
+        {
+            batDir = MousePositionBat; // sets the bat dir to the mouse
+        }
+    }
+
     // used to move the player based on their input
     private void moveThePlayer()
     {
@@ -52,7 +79,6 @@ public class SystemsPlayer : MonoBehaviour
     // used to rotate the bat depending on where the mouse is pointing
     private void rotateBatDir()
     {
-        Debug.Log(batDir);
-        PlayerBatHinge.transform.up = batDir - (Vector2)transform.position; //points the hinge of the bat towards the mouse 
+        PlayerBatHinge.transform.up = (Vector2)batDir - (Vector2)transform.position; //points the hinge of the bat towards the mouse 
     }
 }
