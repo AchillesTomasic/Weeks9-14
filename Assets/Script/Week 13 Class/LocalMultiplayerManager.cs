@@ -34,6 +34,8 @@ public class LocalMultiplayerManager : MonoBehaviour
 
     public void TryAttack(PlayerInput attackingPlayer)
     {
+        Debug.Log("Attack");
+        /*
         for (int i = 0; i < existingPlayers.Count; i++)
         {
             if (attackingPlayer == existingPlayers[i]) 
@@ -49,5 +51,6 @@ public class LocalMultiplayerManager : MonoBehaviour
                 Debug.Log("Attack" );
             }
         }
+        */
     }
 }
