@@ -298,10 +298,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalMultiplayerManager
   possiblePlayerVisuals:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1478117742, guid: 529af4bdebfb57844ac40648c60dbc05, type: 3}
+  - {fileID: -887230987, guid: 529af4bdebfb57844ac40648c60dbc05, type: 3}
+  - {fileID: 21300178, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  - {fileID: -1259242931, guid: 529af4bdebfb57844ac40648c60dbc05, type: 3}
   existingPlayers: []
 --- !u!4 &2022196022
 Transform:
