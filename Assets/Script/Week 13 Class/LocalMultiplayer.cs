@@ -2,9 +2,13 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 public class LocalMultiplayer : MonoBehaviour
 {
+    public CinemachineImpulseSource impulseSource;
+    public SpriteRenderer playerRenderer;
+    public int health = 5;
     public Vector2 moveDir;
     public float moveSpeed;
     public float dashSpeed;
@@ -18,6 +22,8 @@ public class LocalMultiplayer : MonoBehaviour
     //ienumerators
     public IEnumerator attackEnumerator;
     public IEnumerator dashEnumerator;
+    public IEnumerator DamagedEnumerator;
+    public ParticleSystem particleDamaged;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +34,7 @@ public class LocalMultiplayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        killPlayer();
         transform.position += (Vector3)moveDir *  moveSpeed * Time.deltaTime;
     }
     public void OnMove(InputAction.CallbackContext context)
@@ -60,16 +67,48 @@ public class LocalMultiplayer : MonoBehaviour
         StartCoroutine(dashEnumerator);
         
     }
+    public void OnTakeDamage(InputAction.CallbackContext context)
+    {
+        if(DamagedEnumerator != null)
+        {
+            StopCoroutine(DamagedEnumerator);
+        }
+        if(context.performed == true){
+        DamagedEnumerator = spinPlayer();
+        StartCoroutine(DamagedEnumerator);
+        impulseSource.GenerateImpulse();
+        health -= 1;
+        }
+    }
+    private void killPlayer()
+    {
+        if(health < 0)
+        {
+            playerRenderer.color = new Color(255,0,0);
+        }
+    }
+     public IEnumerator spinPlayer()
+    {
+        float timer = 0;
+        particleDamaged.Emit(10);
+        while(timer < 1){
+        float rotateZ = Mathf.Lerp(0,360,timer / 1);
+        timer += Time.deltaTime;
+        transform.eulerAngles = new Vector3(0,0,rotateZ);
+        yield return null;
+        }
+        
+    }   
+    
     public IEnumerator interactDashEnumerator()
     {
-        float timer = 1f;
+        
         trailRendererDash.enabled = true;
         moveSpeed = dashSpeed;
-        while (timer > 0f)
-        {
-            timer -= Time.deltaTime;
-            yield return null;
-        }
+        
+        
+        yield return new WaitForSeconds(1);
+        
         trailRendererDash.enabled = false;
         moveSpeed = normalSpeed;
     }
@@ -89,4 +128,5 @@ public class LocalMultiplayer : MonoBehaviour
         }
         Debug.Log(timer);
     }
+    
 }
